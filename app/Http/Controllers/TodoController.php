@@ -46,23 +46,28 @@ class TodoController extends Controller
 
     // Mengupdate todo tertentu
     public function update(Request $request, $id)
-    {
-        $todo = Todo::findOrFail($id);  // Mencari todo berdasarkan id
+{
+    $todo = Todo::findOrFail($id); // Cari todo berdasarkan ID
 
-        // Validasi input
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'completed' => 'boolean',
-        ]);
+    // Validasi input
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'completed' => 'nullable|string|in:pending,completed,overdue',
+    ]);
 
-        // Update data todo
-        $todo->update([
-            'title' => $request->title,
-            'completed' => $request->completed,
-        ]);
+    // Konversi nilai `completed` untuk disesuaikan dengan database
+    $completed = $request->completed === 'completed';
 
-        return response()->json($todo);
-    }
+    // Update data todo
+    $todo->update([
+        'title' => $request->title,
+        'completed' => $completed,
+    ]);
+
+    return response()->json($todo);
+}
+
+
 
     // Menghapus todo tertentu
     public function destroy($id)

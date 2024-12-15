@@ -52,7 +52,7 @@ const TodoList = () => {
             console.error("Error updating todo status:", error);
             alert(
                 error.response?.data?.message ||
-                "Failed to update status. Please try again."
+                    "Failed to update status. Please try again."
             );
         }
     };
@@ -68,7 +68,7 @@ const TodoList = () => {
             console.error("Error deleting todo:", error);
             alert(
                 error.response?.data?.message ||
-                "Failed to delete todo. Please try again."
+                    "Failed to delete todo. Please try again."
             );
         }
     };
@@ -90,6 +90,7 @@ const TodoList = () => {
         try {
             const response = await axios.put(`/api/todos/${editTodoId}`, {
                 title: editTodoTitle,
+                completed: "pending", // Tambahkan default jika tidak diubah
             });
 
             setTodos(
@@ -124,7 +125,9 @@ const TodoList = () => {
                             <input
                                 type="text"
                                 value={newTodoTitle}
-                                onChange={(e) => setNewTodoTitle(e.target.value)}
+                                onChange={(e) =>
+                                    setNewTodoTitle(e.target.value)
+                                }
                                 placeholder="Enter new task"
                                 className="flex-grow border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a3b89]"
                             />
